@@ -122,20 +122,28 @@ function myrot13(){
     echo ${1} | tr "$(printf %13sA-z)" A-zA-z
 }
 
+setopt REMATCH_PCRE
 function w3(){
     ### use w3m in benri way
     ### no argment --> open bookmark
     ### hoge.foo.com type string argment --> open URL
     ### word(s) argment --> search in google
-    url_pat=0-9a-zA-Z?=#+_\&:/%
+    
+    url_pat="0-9a-zA-Z?=#+_\&:/%"
+    #suffix_pat='\.co\.jp|\.ac\.jp|\.go\.jp|\.com|\.org|\.edu|\.gov'
+
     if [[ $# == 0 ]]; then
         w3m ${HOME}/.w3m/bookmark.html
 
-    elif [[ ${1} =~ ^[${url_pat}]+\.[${url_pat}]+\.[${url_pat}\.]+$ ]]; then
+    elif [[ ${1} -regex-match ^[${url_pat}]+\\.[${url_pat}]+\\.[${url_pat}\\.]+$ ]]; then # more than 2 periods considers as URL
+        #print 'URL: '${1}
         w3m ${1}
-    else
-        #print 'opening... https://www.google.co.jp/search?q='"${1}"
-        w3m 'https://www.google.co.jp/search?q='"${1}"
+    elif [[ ${1} =~ ^[0-9a-zA-Z?=#+-_\&:/%\ \.]+ ]]; then
+        #print 'word: '${1}
+        print 'opening... https://www.google.co.jp/search?q='"${1}"
+#        w3m 'https://www.google.co.jp/search?q='"${1}"
+    else 
+        print 'Cannot judge string: '${1}
     fi   
 }
 
