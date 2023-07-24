@@ -118,10 +118,15 @@ function pumount(){
 }
 
 function myrot13(){
+    ### make string by rot13 conversion
     echo ${1} | tr "$(printf %13sA-z)" A-zA-z
 }
 
 function w3(){
+    ### use w3m in benri way
+    ### no argment --> open bookmark
+    ### hoge.foo.com type string argment --> open URL
+    ### word(s) argment --> search in google
     url_pat=0-9a-zA-Z?=#+_\&:/%
     if [[ $# == 0 ]]; then
         w3m ${HOME}/.w3m/bookmark.html
