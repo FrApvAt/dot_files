@@ -1,0 +1,198 @@
+# .zshrc created by sencing for 2023-06-21
+autoload -Uz add-zsh-hook
+setopt CORRECT # correct input error
+setopt IGNOREEOF # prevent from loggin out by ctrl-d
+
+## PATH
+# Path should be assaigned in the .zshenv
+
+## Enviromental variables
+export EDITOR="/bin/vim"
+export LESSOPEN='| /usr/share/source-highlight/src-hilite-lesspipe.sh %s'
+export LESS='-R -j10'
+case ${OSTYPE} in
+	linux*)
+	TRASH=${HOME}'/.local/share/Trash/files'
+        #TRASH='/var/tmp/sencing.trash/'
+	;;
+	darwin*)
+	TRASH=${HOME}'/.Trash/'
+esac
+
+## ZLE
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^O' edit-command-line
+
+## Functions
+### Load functions from file
+ [ -f ~/bin/my_functions.zsh ] && source ~/bin/my_functions.zsh
+
+### functions for key-bindings
+function _cd-to-parent-dir() {
+    BUFFER="cd ..; ls "
+    CURSOR=$#BUFFER
+}
+
+zle -N cd-to-parent-dir _cd-to-parent-dir
+
+## List
+setopt LIST_PACKED # display packed list in complement mode
+setopt NOLISTBEEP # do not give beep when complement list is shown
+
+# dircolor may be obsoleted
+#case ${OSTYPE} in # set the color of directories for .dircolors
+#	linux*)
+#		eval $(dircolors -b ~/.dircolors) 
+#		;;
+#	darwin*)
+#		eval $(gdircolors -b ~/.dircolors-solarized) 
+#		;;
+#esac
+
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # set the color of completion list
+
+## Complement
+autoload -U compinit ; compinit
+
+## Prediction
+#autoload predict-on; predict-on
+
+## Globbing
+setopt EXTENDED_GLOB
+
+## Redirection
+setopt MULTIOS
+
+## Directory stack
+setopt PUSHD_IGNORE_DUPS
+DIRSTACKSIZE='10'
+setopt AUTO_CD
+setopt AUTO_PUSHD # automatically put current directory to directory stack
+
+## Named directories
+hash -d ex=~/Documents/Experiments/
+hash -d d=~/Downloads/
+
+## History
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt HIST_IGNORE_DUPS #ignore history of duplication
+setopt SHARE_HISTORY #share history between terminals
+setopt EXTENDED_HISTORY
+setopt HIST_REDUCE_BLANKS
+
+## Prompt
+COLOR_NUM="0"
+function change_color(){
+	COLOR_NUM=`expr $COLOR_NUM + 1`	
+	PROMPT="%B%F{$[COLOR_NUM % 7 + 1]}%#%f%b"
+	PROMPT2="%B%F{$[COLOR_NUM % 7 + 1]}%_>%f%b"
+	RPROMPT="%B%F{$[COLOR_NUM %7 +1 ]}[%~]%f%b"
+}
+add-zsh-hook precmd change_color
+SPROMPT="correct: %R -> %r : ok? [No, Yes, Abort, Edit]"
+
+## Modify control flow
+if [[ -t 0 ]]; then  # applied to stdin open (prevent scp error)
+	stty stop undef #disable <C-S>
+	stty start undef #disable <C-Q>
+	stty quit undef #disable <C-\>
+fi
+
+## Zle Keybindings
+bindkey -v
+bindkey -M vicmd '?' history-incremental-search-backward
+bindkey -M vicmd 'Q' push-line-or-edit
+bindkey -M vicmd 'Y' vi-yank-eol
+bindkey -M viins '^B' backward-char
+bindkey -M viins '^F' forward-char
+#bindkey -M viins 'M-f' forward-word # meta is invalid in gnome-terminal
+#bindkey -M viins 'M-b' backward-word # meta is invalid in gnome-terminal
+bindkey -M viins '[1;5C' forward-word # meta is invalid in gnome-terminal
+bindkey -M viins '[1;5D' backward-word # meta is invalid in gnome-terminal
+bindkey -M viins '^A' beginning-of-line
+bindkey -M viins '^E' end-of-line
+bindkey -M viins '^K' kill-line
+bindkey -M viins '^Y' yank
+bindkey -M viins '^P' up-line-or-history
+bindkey -M viins '^N' down-line-or-history
+bindkey -M viins '^R' history-incremental-search-backward
+bindkey -M viins '^D' delete-char
+bindkey -M viins '^L' list-choices
+bindkey -M viins '^D^U' cd-to-parent-dir
+#bindkey -M viins '' cd-to-parent-dir
+
+## Aliases
+case ${OSTYPE} in
+	linux*)
+		alias ls='ls --color=auto'
+	;;
+	darwin*)
+		alias ls='gls --color=auto'
+		alias date='gdate'
+		alias usb_umount='print use "pumount command"'
+		alias imagej='java -Xmx1024m \
+		 -jar /Applications/ImageJ/ImageJ.app/Contents/Resources/Java/ij.jar \
+		 -ijpath /Applications/ImageJ'
+		alias libreoffice='/Applications/LibreOffice.app/Contents/MacOS/soffice'
+	;;
+esac
+
+alias rm='rm -iv'
+alias mv='mv -iv'
+alias cp='cp -ivp'
+alias vim='vim -X'
+alias lss='ls -Ssrh'
+alias lst='ls -trh'
+alias w3g='w3m www.google.com'
+alias vim='nvim'
+#alias mutt='snap run mutt'
+alias mkar='tar -cjvf'
+alias exar='tar -xjvf'
+alias ipy='ipython3'
+alias ipys='ipython3 --profile=seaborn'
+alias dirs='dirs -v'
+alias open='xdg-open'
+alias lcalc='libreoffice --calc'
+alias wezterm='flatpak run org.wezfurlong.wezterm'
+alias quarantine_viruses='find /home/sencing/.clamtk/history/ -mtime -1 -name "*.log" -print0 | xargs -0 grep "FOUND" | cut -d':' -f1 | xargs -i mv -iv {} ~/.clamtk/viruses/'
+
+case ${OSTYPE} in
+	linux*)
+		function upd(){
+			sudo apt update; sudo apt upgrade }
+		function my_backup(){
+		print 'Do you like to backup your home? (Y/n)'
+		read respond
+		[[ ${respond} == 'Y' ]] && backup_my_home}
+	;;
+	darwin*)
+	;;
+esac
+
+
+case ${OSTYPE} in
+	linux*)
+		#klist -s || kinit
+		my_backup
+	;;
+	darwin*)
+	;;
+esac
+
+## Message and greetings
+print ' '
+print '================================'
+print Hello ${USER}. 
+print You have logined into $( hostname -f ) 
+print 'Date & time: '$( date --iso-8601=second )
+${HOME}/bin/commandline-tips.zsh read
+print '================================'
+
+
+## Loading experiment file
+ [ -f ~/.zshrc.exp0621 ] && source ~/.zshrc.exp0621
+
+ 
