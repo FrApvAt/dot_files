@@ -122,10 +122,11 @@ function myrot13(){
 }
 
 function w3(){
+    url_pat=0-9a-zA-Z?=#+_\&:/%
     if [[ $# == 0 ]]; then
         w3m ${HOME}/.w3m/bookmark.html
 
-    elif [[ ${1} =~ ^[0-9a-zA-Z?=#+_\&:/%]+\.[0-9a-zA-Z?=#+_\&:/%]+\.[0-9a-zA-Z?=#+_\&:/%\.]+$ ]]; then
+    elif [[ ${1} =~ ^[${url_pat}]+\.[${url_pat}]+\.[${url_pat}\.]+$ ]]; then
         w3m ${1}
     else
         #print 'opening... https://www.google.co.jp/search?q='"${1}"
@@ -136,4 +137,3 @@ function w3(){
 
 ### Final statement###
 print 'done'
-[[ www.yahoo.co.jp =~ ^[a-z]+\.[a-z]+\.[a-z\.]+$ ]]
