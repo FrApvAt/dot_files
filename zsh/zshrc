@@ -2,6 +2,7 @@
 autoload -Uz add-zsh-hook
 setopt CORRECT # correct input error
 setopt IGNOREEOF # prevent from loggin out by ctrl-d
+setopt REMATCH_PCRE # use PCRE in regex
 
 ## PATH
 # Path should be assaigned in the .zshenv

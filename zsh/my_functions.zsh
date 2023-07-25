@@ -122,7 +122,6 @@ function myrot13(){
     echo ${1} | tr "$(printf %13sA-z)" A-zA-z
 }
 
-setopt REMATCH_PCRE
 function w3(){
     ### use w3m in benri way
     ### no argment --> open bookmark
@@ -135,13 +134,14 @@ function w3(){
     if [[ $# == 0 ]]; then
         w3m ${HOME}/.w3m/bookmark.html
 
-    elif [[ ${1} -regex-match ^[${url_pat}]+\\.[${url_pat}]+\\.[${url_pat}\\.]+$ ]]; then # more than 2 periods considers as URL
+    elif [[ ${1} -pcre-match "^[${url_pat}]+\.[${url_pat}]+\.[${url_pat}\.]+$" ]]; then # more than 2 periods considers as URL
         #print 'URL: '${1}
         w3m ${1}
     elif [[ ${1} =~ ^[0-9a-zA-Z?=#+-_\&:/%\ \.]+ ]]; then
-        #print 'word: '${1}
-        print 'opening... https://www.google.co.jp/search?q='"${1}"
-#        w3m 'https://www.google.co.jp/search?q='"${1}"
+        args=$(echo $@| tr  ' ' '+')
+        #print 'word: '${args}
+        print 'opening... https://www.google.co.jp/search?q='"${args}"
+        w3m 'https://www.google.co.jp/search?q='"${args}"
     else 
         print 'Cannot judge string: '${1}
     fi   
