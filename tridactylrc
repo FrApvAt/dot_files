@@ -1,0 +1,16 @@
+" Settings for tridactyl
+
+" General setting
+blacklistadd https://mail.gmail.com 
+
+" Key mapping
+" nomal mode
+bind --mode=normal <C-b> back
+bind --mode=normal <C-]> forward
+bind --mode=normal b scrollpage -1
+bind --mode=normal B  fillcmdline tab 
+" bind --mode=normal B  tab http 
+
+
+" Alias
+command search tabopen

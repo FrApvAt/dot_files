@@ -12,7 +12,8 @@
 
 keymap	C-@	MARK
 keymap	C-a	LINE_BEGIN
-keymap	C-b	MOVE_LEFT
+keymap	C-b	BACK
+#keymap	C-b	MOVE_LEFT
 keymap	C-e	LINE_END
 keymap	C-f	NEXT_PAGE
 #keymap	C-f	MOVE_RIGHT
@@ -33,6 +34,7 @@ keymap	C-u	PREV_LINK
 keymap	C-v	NEXT_PAGE
 keymap	C-w	WRAP_TOGGLE
 keymap	C-z	SUSPEND
+keymap	C-]	NEXT
 
 keymap	SPC	NEXT_PAGE
 keymap	!	SHELL
@@ -58,12 +60,15 @@ keymap	D	DOWNLOAD_LIST
 keymap	E	EDIT
 keymap	F	FRAME
 keymap	G	END
-keymap	H	HELP
+keymap	H	CURSOR_TOP
+#keymap	H	HELP
 keymap	I	VIEW_IMAGE
 keymap	J	UP
 keymap	K	DOWN
-keymap	L	LIST
-keymap	M	EXTERN
+keymap	L	CURSOR_BOTTOM
+#keymap	L	LIST
+keymap	M	CURSOR_MIDDLE
+#keymap	M	EXTERN
 keymap	N	SEARCH_PREV
 keymap	Q	EXIT
 keymap	R	RELOAD
@@ -85,7 +90,8 @@ keymap	i	PEEK_IMG
 keymap	j	MOVE_DOWN
 keymap	k	MOVE_UP
 keymap	l	MOVE_RIGHT
-keymap	m	MOUSE_TOGGLE
+keymap	m	EXTERN
+#keymap	m	MOUSE_TOGGLE
 keymap	n	SEARCH_NEXT
 keymap	o	OPTIONS
 keymap	q	QUIT
@@ -98,6 +104,8 @@ keymap	z	CENTER_V
 keymap	{	PREV_TAB
 keymap	|	PIPE_BUF
 keymap	}	NEXT_TAB
+keymap	OP	HELP
+keymap	1	HELP
 
 keymap	M-TAB	PREV_LINK
 keymap	M-C-j	SAVE_LINK

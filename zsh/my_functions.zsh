@@ -1,4 +1,8 @@
+#!/usr/bin/zsh
 ### My zsh functions ###
+
+setopt REMATCH_PCRE # Use PCRE for regex
+zmodload zsh/pcre
 
 print '\n'
 print 'Loading private functions ...'
@@ -145,6 +149,14 @@ function w3(){
     else 
         print 'Cannot judge string: '${1}
     fi   
+}
+
+function rhl(){
+    ### run R headless and get result
+    # arg #1 : R script to analysis
+    srcFile=${1}
+
+    R --vanilla < ${srcFile}> ${srcFile}.result
 }
 
 

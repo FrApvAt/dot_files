@@ -8,7 +8,8 @@ setopt REMATCH_PCRE # use PCRE in regex
 # Path should be assaigned in the .zshenv
 
 ## Enviromental variables
-export EDITOR="/bin/vim"
+export VISUAL=/snap/bin/nvim
+export EDITOR=/snap/bin/nvim
 export LESSOPEN='| /usr/share/source-highlight/src-hilite-lesspipe.sh %s'
 export LESS='-R -j10'
 case ${OSTYPE} in
