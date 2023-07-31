@@ -159,6 +159,7 @@ alias dirs='dirs -v'
 alias open='xdg-open'
 alias lcalc='libreoffice --calc'
 alias wezterm='flatpak run org.wezfurlong.wezterm'
+alias gitp='git add . ; git commit; git push origin main'
 alias quarantine_viruses='find /home/sencing/.clamtk/history/ -mtime -1 -name "*.log" -print0 | xargs -0 grep "FOUND" | cut -d':' -f1 | xargs -i mv -iv {} ~/.clamtk/viruses/'
 
 case ${OSTYPE} in
